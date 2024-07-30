@@ -1,0 +1,86 @@
+<mat-card class="mat-elevation-z8">
+  <div class="p-12">
+    <div class="flex w-full gap-4">
+      <div class="flex flex-col">
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          class="bg-slate-200 rounded p-4"
+          placeholder="Ex. HP"
+          value="Sushi"
+          [(ngModel)]="search"
+          (change)="getServers()"
+        />
+      </div>
+
+      <div class="max-w-md flex flex-col">
+        <mat-label>Filter by storage</mat-label>
+        <mat-slider
+          min="1"
+          max="11"
+          step="1"
+          showTickMarks
+          discrete
+          [displayWith]="formatLabel"
+          (change)="getServers()"
+          class=""
+        >
+          <input matSliderThumb [(ngModel)]="gridSize" />
+        </mat-slider>
+      </div>
+
+      <div class="w-[300px]">
+        <mat-form-field>
+          <mat-label>HDD Type</mat-label>
+          <mat-select (selectionChange)="getServers()" [(ngModel)]="hddType">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="sas">SAS</mat-option>
+            <mat-option value="sata">SATA</mat-option>
+            <mat-option value="ssd">SSD</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <table
+      mat-table
+      [dataSource]="servers"
+      matSort
+      (matSortChange)="getServers()"
+    >
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef>Model</th>
+        <td mat-cell *matCellDef="let element">{{ element.model }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ram">
+        <th mat-header-cell *matHeaderCellDef>Ram</th>
+        <td mat-cell *matCellDef="let element">{{ element.ram }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hdd">
+        <th mat-header-cell *matHeaderCellDef>HDD</th>
+        <td mat-cell *matCellDef="let element">{{ element.hdd }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+      showFirstLastButtons
+      [length]="totalLength"
+      aria-label="Select page of periodic elements"
+      (page)="getServers()"
+    >
+    </mat-paginator>
+  </div>
+</mat-card>
